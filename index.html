@@ -601,7 +601,7 @@
     <!-- riga prezzo -->
     <div class="filter-row">
       <span class="filter-label"><i class="fa-solid fa-wallet" style="margin-right:5px;font-size:9px"></i>Prezzo</span>
-      <div class="filter-chips">
+            <div class="filter-chips" id="chips-price-tools">
         <button class="chip price-free" data-price="Gratuito" onclick="setPrice(this,'tools')">Gratuito</button>
         <button class="chip price-freemium" data-price="Freemium" onclick="setPrice(this,'tools')">Freemium</button>
         <button class="chip price-paid" data-price="A pagamento" onclick="setPrice(this,'tools')">A pagamento</button>
@@ -631,7 +631,7 @@
     <!-- riga prezzo -->
     <div class="filter-row">
       <span class="filter-label"><i class="fa-solid fa-wallet" style="margin-right:5px;font-size:9px"></i>Prezzo</span>
-      <div class="filter-chips">
+     <div class="filter-chips" id="chips-price-ext">
         <button class="chip price-free" data-price="Gratuito" onclick="setPrice(this,'ext')">Gratuita</button>
         <button class="chip price-freemium" data-price="Freemium" onclick="setPrice(this,'ext')">Freemium</button>
       </div>
@@ -1446,7 +1446,7 @@ function setCat(el, tab) {
 
 function setPrice(el, tab) {
   const same = el.classList.contains('active');
-  document.querySelectorAll('#filters-' + tab + ' .filter-chips:last-child .chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('#chips-price-' + tab + ' .chip').forEach(c => c.classList.remove('active'));
   if (!same) {
     el.classList.add('active');
     state[tab].price = el.dataset.price;
