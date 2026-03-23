@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools Digital dalla Mary</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050508;
+    --bg2: #0d0d14;
+    --bg3: #12121e;
+    --cyan: #00e5ff;
+    --cyan-dim: #00b8cc;
+    --violet: #c77dff;
+    --violet-dim: #9d4edd;
+    --violet-light: #e0aaff;
+    --border: rgba(0,229,255,0.12);
+    --border-hover: rgba(0,229,255,0.35);
+    --text: #d0e8f0;
+    --text-dim: #7a9ab0;
+    --card-bg: #0e0e1a;
+    --card-hover: #13131f;
+    --green: #39ff7a;
+    --orange: #ffaa00;
+    --red: #ff5566;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── background grid ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── glow blobs ── */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-1 { width: 600px; height: 600px; background: var(--cyan); top: -200px; left: -150px; }
+  .blob-2 { width: 500px; height: 500px; background: var(--violet); bottom: -150px; right: -100px; }
+
+  /* ── header ── */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 52px 24px 36px;
+    text-align: center;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--violet-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── tabs ── */
+  .tab-wrapper {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    padding: 0 24px 32px;
+  }
+
+  .tab-bar {
+    display: flex;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 5px;
+    gap: 4px;
+  }
+
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 28px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .tab-btn i { font-size: 15px; }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, rgba(0,229,255,0.15), rgba(199,125,255,0.15));
+    color: var(--cyan);
+    border: 1px solid rgba(0,229,255,0.25);
+    box-shadow: 0 0 20px rgba(0,229,255,0.08);
+  }
+
+  .tab-btn:not(.active):hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+  }
+
+  .tab-count {
+    background: rgba(0,229,255,0.12);
+    color: var(--cyan);
+    border-radius: 100px;
+    padding: 1px 8px;
+    font-size: 11px;
+  }
+
+  /* ── filters ── */
+  .filters-wrap {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto 24px;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* contenitore card filtri */
+  .filter-panel {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* riga singola filtro: label + chips */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  /* separatore orizzontale tra le due righe */
+  .filter-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  /* etichetta a sinistra di ogni riga */
+  .filter-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+    min-width: 72px;
+    opacity: 0.7;
+  }
+
+  /* barra di ricerca — sopra il panel */
+  .search-box {
+    width: 100%;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  .search-box i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  .search-box input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px 10px 38px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  .search-box input:focus { border-color: var(--cyan-dim); }
+  .search-box input::placeholder { color: var(--text-dim); }
+
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    flex: 1;
+  }
+
+  .chip {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    color: var(--text-dim);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .chip:hover { border-color: var(--cyan-dim); color: var(--cyan); }
+
+  .chip.active {
+    background: rgba(0,229,255,0.1);
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  /* chip prezzo: colori diversi anche a riposo */
+  .chip.price-free    { border-color: rgba(57,255,122,0.2); color: rgba(57,255,122,0.55); }
+  .chip.price-freemium { border-color: rgba(255,170,0,0.2); color: rgba(255,170,0,0.55); }
+  .chip.price-paid    { border-color: rgba(255,85,102,0.2); color: rgba(255,85,102,0.55); }
+
+  .chip.price-free:hover    { border-color: var(--green);  color: var(--green); }
+  .chip.price-freemium:hover { border-color: var(--orange); color: var(--orange); }
+  .chip.price-paid:hover    { border-color: var(--red);    color: var(--red); }
+
+  .chip.price-free.active   { background: rgba(57,255,122,0.1); border-color: var(--green); color: var(--green); }
+  .chip.price-freemium.active { background: rgba(255,170,0,0.1); border-color: var(--orange); color: var(--orange); }
+  .chip.price-paid.active   { background: rgba(255,85,102,0.1); border-color: var(--red); color: var(--red); }
+
+  /* ── stats bar ── */
+  .stats-bar {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+  }
+
+  .stats-bar span { color: var(--cyan); font-weight: 600; }
+
+  /* ── grid ── */
+  .grid-wrap {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  /* ── card ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(0,229,255,0.04), rgba(199,125,255,0.04));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    background: var(--card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,229,255,0.08);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+  }
+
+  .card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(199,125,255,0.1));
+    border: 1px solid rgba(0,229,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 17px;
+    color: var(--cyan);
+  }
+
+  .card-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+
+  .card-title-area { flex: 1; min-width: 0; }
+
+  .card-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #eef4f8;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .card-url {
+    font-size: 11px;
+    color: var(--text-dim);
+    opacity: 0.6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+
+  .tag {
+    font-size: 10.5px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-cat {
+    background: rgba(199,125,255,0.1);
+    color: var(--violet-light);
+    border: 1px solid rgba(199,125,255,0.25);
+  }
+
+  .tag-free {
+    background: rgba(57,255,122,0.1);
+    color: var(--green);
+    border: 1px solid rgba(57,255,122,0.3);
+  }
+
+  .tag-freemium {
+    background: rgba(255,170,0,0.1);
+    color: var(--orange);
+    border: 1px solid rgba(255,170,0,0.3);
+  }
+
+  .tag-paid {
+    background: rgba(255,85,102,0.1);
+    color: var(--red);
+    border: 1px solid rgba(255,85,102,0.3);
+  }
+
+  .btn-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid rgba(0,229,255,0.3);
+    background: rgba(0,229,255,0.07);
+    color: var(--cyan);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-open:hover {
+    background: rgba(0,229,255,0.15);
+    border-color: var(--cyan);
+    box-shadow: 0 0 14px rgba(0,229,255,0.2);
+  }
+
+  .btn-open.ext {
+    border-color: rgba(199,125,255,0.3);
+    background: rgba(199,125,255,0.07);
+    color: var(--violet-light);
+  }
+
+  .btn-open.ext:hover {
+    background: rgba(199,125,255,0.15);
+    border-color: var(--violet);
+    box-shadow: 0 0 14px rgba(199,125,255,0.2);
+  }
+
+  /* empty state */
+  .empty-state {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-dim);
+  }
+
+  .empty-state i { font-size: 36px; color: var(--border); margin-bottom: 14px; display: block; }
+
+  /* ── footer ── */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 28px 24px 36px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  footer span { color: var(--violet-light); }
+  footer .heart { color: #ff5588; }
+
+  /* ── responsive ── */
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 2rem; }
+    .tab-btn { padding: 10px 16px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-badge">
+    <i class="fa-solid fa-bolt"></i>
+    Curated by a SEO manager
+  </div>
+  <h1>Tools Digital dalla Mary</h1>
+  <p class="subtitle">Tool web e estensioni Chrome raccolti sul campo. Tutto ciò che serve per lavorare meglio nel digitale.</p>
+</header>
+
+<!-- TABS -->
+<div class="tab-wrapper">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('tools', this)">
+      <i class="fa-solid fa-wrench"></i>
+      Tool web
+      <span class="tab-count" id="tools-count">53</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('ext', this)">
+      <i class="fa-brands fa-chrome"></i>
+      Estensioni Chrome
+      <span class="tab-count" id="ext-count">19</span>
+    </button>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-wrap" id="filters-tools">
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" placeholder="Cerca tool..." oninput="filterCards('tools')" id="search-tools">
+  </div>
+  <div class="filter-panel">
+    <!-- riga categoria -->
+    <div class="filter-row">
+      <span class="filter-label"><i class="fa-solid fa-tag" style="margin-right:5px;font-size:9px"></i>Categoria</span>
+      <div class="filter-chips" id="chips-cat-tools">
+        <button class="chip active" data-cat="all" onclick="setCat(this,'tools')">Tutti</button>
+        <button class="chip" data-cat="SEO" onclick="setCat(this,'tools')">SEO</button>
+        <button class="chip" data-cat="AI" onclick="setCat(this,'tools')">AI</button>
+        <button class="chip" data-cat="Video" onclick="setCat(this,'tools')">Video & audio</button>
+        <button class="chip" data-cat="Dev" onclick="setCat(this,'tools')">Dev & tecnica</button>
+        <button class="chip" data-cat="Analytics" onclick="setCat(this,'tools')">Analytics</button>
+        <button class="chip" data-cat="Design" onclick="setCat(this,'tools')">Design</button>
+        <button class="chip" data-cat="Ecommerce" onclick="setCat(this,'tools')">E-commerce</button>
+        <button class="chip" data-cat="Social" onclick="setCat(this,'tools')">Social & ADV</button>
+        <button class="chip" data-cat="Email" onclick="setCat(this,'tools')">Email marketing</button>
+        <button class="chip" data-cat="Produttività" onclick="setCat(this,'tools')">Produttività</button>
+      </div>
+    </div>
+    <div class="filter-divider"></div>
+    <!-- riga prezzo -->
+    <div class="filter-row">
+      <span class="filter-label"><i class="fa-solid fa-wallet" style="margin-right:5px;font-size:9px"></i>Prezzo</span>
+      <div class="filter-chips">
+        <button class="chip price-free" data-price="Gratuito" onclick="setPrice(this,'tools')">Gratuito</button>
+        <button class="chip price-freemium" data-price="Freemium" onclick="setPrice(this,'tools')">Freemium</button>
+        <button class="chip price-paid" data-price="A pagamento" onclick="setPrice(this,'tools')">A pagamento</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="filters-wrap" id="filters-ext" style="display:none">
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" placeholder="Cerca estensione..." oninput="filterCards('ext')" id="search-ext">
+  </div>
+  <div class="filter-panel">
+    <!-- riga categoria -->
+    <div class="filter-row">
+      <span class="filter-label"><i class="fa-solid fa-tag" style="margin-right:5px;font-size:9px"></i>Categoria</span>
+      <div class="filter-chips" id="chips-cat-ext">
+        <button class="chip active" data-cat="all" onclick="setCat(this,'ext')">Tutte</button>
+        <button class="chip" data-cat="SEO" onclick="setCat(this,'ext')">SEO</button>
+        <button class="chip" data-cat="Dev" onclick="setCat(this,'ext')">Dev & tecnica</button>
+        <button class="chip" data-cat="Ecommerce" onclick="setCat(this,'ext')">E-commerce</button>
+        <button class="chip" data-cat="Produttività" onclick="setCat(this,'ext')">Produttività</button>
+      </div>
+    </div>
+    <div class="filter-divider"></div>
+    <!-- riga prezzo -->
+    <div class="filter-row">
+      <span class="filter-label"><i class="fa-solid fa-wallet" style="margin-right:5px;font-size:9px"></i>Prezzo</span>
+      <div class="filter-chips">
+        <button class="chip price-free" data-price="Gratuito" onclick="setPrice(this,'ext')">Gratuita</button>
+        <button class="chip price-freemium" data-price="Freemium" onclick="setPrice(this,'ext')">Freemium</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar" id="stats-bar">
+  Mostrati <span id="visible-count">53</span> risultati
+</div>
+
+<!-- GRIDS -->
+<div class="grid-wrap">
+
+  <!-- TOOLS TAB -->
+  <div class="tab-panel active" id="panel-tools">
+    <div class="cards-grid" id="grid-tools">
+
+      <!-- cards injected by JS -->
+
+    </div>
+  </div>
+
+  <!-- ESTENSIONI TAB -->
+  <div class="tab-panel" id="panel-ext">
+    <div class="cards-grid" id="grid-ext">
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Fatto col <span class="heart">♥</span> da <span>Maria Paloschi</span>
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+
+const TOOLS = [
+  {
+    name: "Whimsical",
+    url: "https://whimsical.com/login",
+    desc: "Crea flowchart, wireframe e mappe mentali visive in modo collaborativo. Ottimo per strutturare idee, flussi e processi.",
+    cat: "Produttività",
+    price: "Freemium",
+    icon: "fa-solid fa-diagram-project",
+    seo: false
+  },
+  {
+    name: "Adobe Express – generatore QR",
+    url: "https://new.express.adobe.com/tools/generate-qr-code",
+    desc: "Genera QR code personalizzati e brandizzati con Adobe Express. Semplice, veloce e gratuito.",
+    cat: "Design",
+    price: "Gratuito",
+    icon: "fa-solid fa-qrcode",
+    seo: false
+  },
+  {
+    name: "Salesforce Shopping Index",
+    url: "https://www.salesforce.com/retail/shopping-index/",
+    desc: "Report Salesforce sulle tendenze dello shopping online globale. Dati aggregati e insight per il retail e l'e-commerce.",
+    cat: "Analytics",
+    price: "Gratuito",
+    icon: "fa-solid fa-chart-line",
+    seo: false
+  },
+  {
+    name: "Jekoo",
+    url: "https://www.jekoo.com/it/",
+    desc: "Tool per creare infografiche e visual content in modo semplice. Alternativa a Canva con template professionali.",
+    cat: "Design",
+    price: "Freemium",
+    icon: "fa-solid fa-palette",
+    seo: false
+  },
+  {
+    name: "Advanced Web Ranking",
+    url: "https://app.advancedwebranking.com/",
+    desc: "Monitora le posizioni keyword nei motori di ricerca con aggiornamenti regolari. Reportistica SEO avanzata e white-label.",
+    cat: "SEO",
+    price: "A pagamento",
+    icon: "fa-solid fa-ranking-star",
+    seo: true
+  },
+  {
+    name: "Schema Validator (Google)",
+    url: "https://validator.schema.org/",
+    desc: "Valida il markup strutturato schema.org di qualsiasi pagina. Strumento ufficiale Google, gratuito e indispensabile per la SEO tecnica.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-code",
+    seo: true
+  },
+  {
+    name: "JSON Crack",
+    url: "https://jsoncrack.com/editor",
+    desc: "Visualizza e naviga strutture JSON, YAML e XML in modo grafico e interattivo. Ideale per analizzare dati strutturati e API.",
+    cat: "Dev",
+    price: "Freemium",
+    icon: "fa-solid fa-file-code",
+    seo: false
+  },
+  {
+    name: "Visual Vocabulary (FT)",
+    url: "https://ft-interactive.github.io/visual-vocabulary/",
+    desc: "Guida visiva del Financial Times per scegliere il tipo di grafico giusto per ogni dato. Riferimento fondamentale per data viz.",
+    cat: "Analytics",
+    price: "Gratuito",
+    icon: "fa-solid fa-chart-bar",
+    seo: false
+  },
+  {
+    name: "Toolify.ai",
+    url: "https://www.toolify.ai/",
+    desc: "Directory di tool AI con dati su traffico, categorie e trend di utilizzo. Scopri i tool AI più usati al mondo.",
+    cat: "AI",
+    price: "Gratuito",
+    icon: "fa-solid fa-robot",
+    seo: false
+  },
+  {
+    name: "Napkin.ai",
+    url: "https://app.napkin.ai/",
+    desc: "Converte automaticamente testo in visualizzazioni, diagrammi e infografiche con AI. Dal concetto alla visual in pochi secondi.",
+    cat: "AI",
+    price: "Freemium",
+    icon: "fa-solid fa-wand-magic-sparkles",
+    seo: false
+  },
+  {
+    name: "Valentin.app",
+    url: "https://valentin.app/",
+    desc: "Tool per analisi SEO tecnica, crawling e audit di siti web. Veloce e intuitivo per chi lavora quotidianamente sulla SEO.",
+    cat: "SEO",
+    price: "Freemium",
+    icon: "fa-solid fa-spider",
+    seo: true
+  },
+  {
+    name: "TikTok Creative Center",
+    url: "https://ads.tiktok.com/business/creativecenter/pc/en",
+    desc: "Libreria ufficiale TikTok di creatività pubblicitarie top performer. Analizza ads, formati e best practice per ogni mercato.",
+    cat: "Social",
+    price: "Gratuito",
+    icon: "fa-brands fa-tiktok",
+    seo: false
+  },
+  {
+    name: "TikTok Trends Hub",
+    url: "https://ads.tiktok.com/business/creativecenter/trends/hub/pc/en",
+    desc: "Monitora in tempo reale i trend TikTok per hashtag, audio e categoria. Essenziale per chi fa content e social strategy.",
+    cat: "Social",
+    price: "Gratuito",
+    icon: "fa-solid fa-arrow-trend-up",
+    seo: false
+  },
+  {
+    name: "Mapify.so",
+    url: "https://mapify.so/",
+    desc: "Crea mappe mentali e riassunti da PDF, video YouTube o URL con AI. Perfetto per studiare, ricercare e sintetizzare contenuti.",
+    cat: "AI",
+    price: "Freemium",
+    icon: "fa-solid fa-brain",
+    seo: false
+  },
+  {
+    name: "NotDiamond AI",
+    url: "https://www.notdiamond.ai/",
+    desc: "Router intelligente che analizza ogni prompt e sceglie automaticamente il miglior modello AI disponibile. Massimizza qualità e costo.",
+    cat: "AI",
+    price: "Freemium",
+    icon: "fa-solid fa-diamond",
+    seo: false
+  },
+  {
+    name: "Genspark.ai",
+    url: "https://www.genspark.ai/",
+    desc: "Motore di ricerca AI che genera risposte strutturate e pagine dedicate (Sparkpages). Ricerca profonda e aggiornata in tempo reale.",
+    cat: "AI",
+    price: "Gratuito",
+    icon: "fa-solid fa-magnifying-glass",
+    seo: false
+  },
+  {
+    name: "TheGigaBrain",
+    url: "https://thegigabrain.com/",
+    desc: "Ricerca semantica su Reddit per trovare discussioni reali, opinioni e insight su qualsiasi argomento. Ottimo per la keyword research qualitativa.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-brands fa-reddit",
+    seo: true
+  },
+  {
+    name: "Shopify – generatore nomi dominio",
+    url: "https://www.shopify.com/tools/domain-name-generator",
+    desc: "Genera idee di nomi dominio disponibili a partire da una keyword. Utile per il naming di brand e progetti e-commerce.",
+    cat: "Ecommerce",
+    price: "Gratuito",
+    icon: "fa-solid fa-at",
+    seo: false
+  },
+  {
+    name: "Otterly.ai – GEO tools",
+    url: "https://otterly.ai/geo-tools/",
+    desc: "Strumenti per la Generative Engine Optimization (GEO): analizza come e quanto il tuo brand compare nelle risposte AI di ChatGPT, Gemini e Perplexity.",
+    cat: "SEO",
+    price: "Freemium",
+    icon: "fa-solid fa-magnifying-glass-chart",
+    seo: true
+  },
+  {
+    name: "Energent.ai",
+    url: "https://app.energent.ai/login",
+    desc: "Agente AI per automazione di task complessi in ambito marketing e business. Esegue ricerche, analisi e azioni in autonomia.",
+    cat: "AI",
+    price: "A pagamento",
+    icon: "fa-solid fa-bolt",
+    seo: false
+  },
+  {
+    name: "Who.is",
+    url: "https://who.is/",
+    desc: "Verifica le informazioni WHOIS su qualsiasi dominio: registrar, data scadenza, nameserver e proprietario. Utile per analisi competitor.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-circle-info",
+    seo: true
+  },
+  {
+    name: "Cloudflare Radar – AI insights",
+    url: "https://radar.cloudflare.com/ai-insights",
+    desc: "Dashboard con dati sull'utilizzo dei crawler AI (GPTBot, Googlebot AI, ecc.) sul web. Analytics su traffico bot e tendenze AI.",
+    cat: "Analytics",
+    price: "Gratuito",
+    icon: "fa-solid fa-shield-halved",
+    seo: true
+  },
+  {
+    name: "Descript",
+    url: "https://www.descript.com/",
+    desc: "Editor audio e video con trascrizione automatica e montaggio testuale. Potente per podcast, video tutorial e contenuti voce.",
+    cat: "Video",
+    price: "Freemium",
+    icon: "fa-solid fa-film",
+    seo: false
+  },
+  {
+    name: "Fliki.ai",
+    url: "https://fliki.ai/",
+    desc: "Crea video con voce AI partendo da testo o script. Supporta decine di lingue e voci. Ideale per video marketing e social.",
+    cat: "Video",
+    price: "Freemium",
+    icon: "fa-solid fa-video",
+    seo: false
+  },
+  {
+    name: "Data Viz Catalogue",
+    url: "https://datavizcatalogue.com/",
+    desc: "Catalogo completo di tutti i tipi di visualizzazioni dati, con esempi, descrizioni e quando usarle. Riferimento visivo per analyst e marketer.",
+    cat: "Analytics",
+    price: "Gratuito",
+    icon: "fa-solid fa-chart-pie",
+    seo: false
+  },
+  {
+    name: "Google Doppl (Labs)",
+    url: "https://labs.google/doppl",
+    desc: "Esperimento Google Labs che permette di provare look diversi su immagini con AI generativa. Progetto sperimentale e gratuito.",
+    cat: "AI",
+    price: "Gratuito",
+    icon: "fa-brands fa-google",
+    seo: false
+  },
+  {
+    name: "Ollama",
+    url: "https://ollama.com/",
+    desc: "Esegui modelli AI open source (Llama, Mistral, ecc.) direttamente in locale sul tuo computer. Privacy totale, zero costi di API.",
+    cat: "AI",
+    price: "Gratuito",
+    icon: "fa-solid fa-microchip",
+    seo: false
+  },
+  {
+    name: "AWR – Google AI Overview tracker",
+    url: "https://www.advancedwebranking.com/free-seo-tools/google-ai-overview",
+    desc: "Monitora gratuitamente la presenza dei siti nelle AI Overview di Google (SGE). Essenziale per capire la nuova SERP AI.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-eye",
+    seo: true
+  },
+  {
+    name: "Firecrawl",
+    url: "https://www.firecrawl.dev/",
+    desc: "Trasforma qualsiasi sito web in dati strutturati puliti per l'AI. Scraping avanzato via API, ideale per RAG e automazioni.",
+    cat: "Dev",
+    price: "Freemium",
+    icon: "fa-solid fa-fire",
+    seo: false
+  },
+  {
+    name: "Waikay.io",
+    url: "https://app.waikay.io/",
+    desc: "Piattaforma per monitorare menzioni e visibilità del brand nelle risposte di ChatGPT, Perplexity e altri AI. GEO monitoring avanzato.",
+    cat: "SEO",
+    price: "A pagamento",
+    icon: "fa-solid fa-satellite-dish",
+    seo: true
+  },
+  {
+    name: "The Fabricant",
+    url: "https://www.thefabricant.com/",
+    desc: "Piattaforma di moda digitale AI-generated. Crea e indossa abiti virtuali, esplora il futuro del fashion nel metaverso.",
+    cat: "AI",
+    price: "Freemium",
+    icon: "fa-solid fa-shirt",
+    seo: false
+  },
+  {
+    name: "Pika Art",
+    url: "https://pika.art/login",
+    desc: "Genera e modifica video con AI partendo da testo o immagini. Creatività visiva avanzata per social, marketing e storytelling.",
+    cat: "Video",
+    price: "Freemium",
+    icon: "fa-solid fa-clapperboard",
+    seo: false
+  },
+  {
+    name: "Krea.ai",
+    url: "https://www.krea.ai/",
+    desc: "Genera e modifica immagini con AI in tempo reale. Uno dei tool creativi più potenti per designer e marketer visivi.",
+    cat: "Design",
+    price: "Freemium",
+    icon: "fa-solid fa-paintbrush",
+    seo: false
+  },
+  {
+    name: "Luma Dream Machine",
+    url: "https://lumalabs.ai/dream-machine",
+    desc: "Genera video realistici e cinematografici da testo o immagini con AI. Alta qualità visiva, ottimo per video concept e mood board.",
+    cat: "Video",
+    price: "Freemium",
+    icon: "fa-solid fa-circle-play",
+    seo: false
+  },
+  {
+    name: "AI Excel Bot",
+    url: "https://aiexcelbot.com/",
+    desc: "Genera formule Excel e Google Sheets tramite linguaggio naturale. Spiega e crea formule complesse senza bisogno di sapere la sintassi.",
+    cat: "Produttività",
+    price: "Freemium",
+    icon: "fa-solid fa-table",
+    seo: false
+  },
+  {
+    name: "Directus",
+    url: "https://directus.io/",
+    desc: "Headless CMS open source per gestire contenuti e dati strutturati con un'interfaccia visuale. Self-hosted o cloud, altamente estensibile.",
+    cat: "Dev",
+    price: "Freemium",
+    icon: "fa-solid fa-database",
+    seo: false
+  },
+  {
+    name: "n8n",
+    url: "https://n8n.io/",
+    desc: "Piattaforma open source per automazioni e workflow no-code/low-code. Integra centinaia di servizi senza scrivere codice (o quasi).",
+    cat: "Produttività",
+    price: "Freemium",
+    icon: "fa-solid fa-arrows-spin",
+    seo: false
+  },
+  {
+    name: "SEO Stack",
+    url: "https://www.seo-stack.io/",
+    desc: "Suite di tool SEO integrati per analisi on-page, keyword research e link building. Tutto in un unico ambiente di lavoro.",
+    cat: "SEO",
+    price: "Freemium",
+    icon: "fa-solid fa-layer-group",
+    seo: true
+  },
+  {
+    name: "WWJD – What Would JohnMu Do",
+    url: "https://www.onely.com/tools/wwjd/",
+    desc: "Simula il comportamento di Googlebot per testare il rendering JavaScript delle pagine. Fondamentale per la SEO tecnica su SPA e React.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-bug",
+    seo: true
+  },
+  {
+    name: "ClassySchema",
+    url: "https://classyschema.org/",
+    desc: "Generatore visuale di markup schema.org per SEO. Crea structured data in JSON-LD in modo semplice e senza errori.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-sitemap",
+    seo: true
+  },
+  {
+    name: "KeywordTool.io",
+    url: "https://keywordtool.io/",
+    desc: "Ricerca keyword su Google, YouTube, TikTok, Amazon e altri motori. Genera migliaia di suggerimenti da autocomplete con dati su volume e CPC.",
+    cat: "SEO",
+    price: "Freemium",
+    icon: "fa-solid fa-key",
+    seo: true
+  },
+  {
+    name: "Learnn Tools",
+    url: "https://learnn.com/tools/",
+    desc: "Directory di tool digitali curata dalla community Learnn. Organizzata per categoria, ottima per scoprire nuovi tool utili al lavoro.",
+    cat: "Produttività",
+    price: "Gratuito",
+    icon: "fa-solid fa-graduation-cap",
+    seo: false
+  },
+  {
+    name: "Ad Mockups",
+    url: "https://admockups.com/",
+    desc: "Crea mockup realistici di annunci social (Facebook, Instagram, TikTok) per presentazioni clienti e approvazioni creative.",
+    cat: "Social",
+    price: "Freemium",
+    icon: "fa-solid fa-rectangle-ad",
+    seo: false
+  },
+  {
+    name: "TikTok AI Copilot",
+    url: "https://ads.tiktok.com/business/copilot/standalone",
+    desc: "Assistente AI integrato in TikTok Ads per generare copy e creatività pubblicitarie. Gratuito per chi ha un account TikTok Business.",
+    cat: "Social",
+    price: "Gratuito",
+    icon: "fa-solid fa-comment-dots",
+    seo: false
+  },
+  {
+    name: "Killed by Google",
+    url: "https://killedbygoogle.com/",
+    desc: "Archivio di tutti i prodotti e servizi Google dismessi nel tempo. Utile per ricerche di mercato e per capire le strategie Google.",
+    cat: "Analytics",
+    price: "Gratuito",
+    icon: "fa-solid fa-skull",
+    seo: false
+  },
+  {
+    name: "UTM Prep – validatore UTM",
+    url: "https://utmprep.com/utm-validator/",
+    desc: "Valida i parametri UTM dei link prima di usarli in campagna. Individua errori di sintassi che compromettono il tracking analytics.",
+    cat: "Analytics",
+    price: "Gratuito",
+    icon: "fa-solid fa-link",
+    seo: true
+  },
+  {
+    name: "StatCounter – quote motori di ricerca",
+    url: "https://gs.statcounter.com/search-engine-market-share/all/",
+    desc: "Dati aggiornati sulle quote di mercato globali dei motori di ricerca. Riferimento imprescindibile per ogni strategia SEO internazionale.",
+    cat: "Analytics",
+    price: "Gratuito",
+    icon: "fa-solid fa-earth-europe",
+    seo: true
+  },
+  {
+    name: "MailCharts",
+    url: "https://www.mailcharts.com/our-data",
+    desc: "Analizza le email dei tuoi competitor: storico, frequenza di invio, design e oggetti. Fonte preziosa per l'email marketing strategy.",
+    cat: "Email",
+    price: "Freemium",
+    icon: "fa-solid fa-envelope-open-text",
+    seo: false
+  },
+  {
+    name: "Forvio",
+    url: "https://www.forvio.com/",
+    desc: "Strumento per la gestione, ottimizzazione e analisi dei feed di prodotto per e-commerce. Migliora la visibilità su Google Shopping e marketplace.",
+    cat: "Ecommerce",
+    price: "A pagamento",
+    icon: "fa-solid fa-rss",
+    seo: true
+  },
+  {
+    name: "RetailRocket",
+    url: "https://retailrocket.net/",
+    desc: "Piattaforma di personalizzazione e raccomandazione prodotti per e-commerce. Aumenta conversioni con AI predittiva e segmentazione utenti.",
+    cat: "Ecommerce",
+    price: "A pagamento",
+    icon: "fa-solid fa-bag-shopping",
+    seo: false
+  },
+  {
+    name: "Milled",
+    url: "https://milled.com/",
+    desc: "Archivio completo di newsletter email inviate da brand di tutto il mondo. Ispirazione per design, oggetti e frequenza delle campagne.",
+    cat: "Email",
+    price: "Gratuito",
+    icon: "fa-solid fa-inbox",
+    seo: false
+  },
+  {
+    name: "Personal.ai",
+    url: "https://www.personal.ai/",
+    desc: "Crea il tuo AI personale addestrato sui tuoi documenti, note e conversazioni. Una memoria digitale intelligente sempre disponibile.",
+    cat: "AI",
+    price: "Freemium",
+    icon: "fa-solid fa-user-astronaut",
+    seo: false
+  },
+  {
+    name: "DoNotPay",
+    url: "https://donotpay.com/",
+    desc: "AI legale che aiuta a contestare multe, cancellare abbonamenti indesiderati e tutelare i consumatori. Automatizza la burocrazia.",
+    cat: "AI",
+    price: "A pagamento",
+    icon: "fa-solid fa-scale-balanced",
+    seo: false
+  }
+];
+
+const EXTENSIONS = [
+  {
+    name: "Google Search Console Enhanced",
+    url: "https://chromewebstore.google.com/detail/google-search-console-enh/fkpkhpigkldfnnimijaaldpafcibaepk",
+    desc: "Aggiunge dati e funzionalità extra direttamente nell'interfaccia di Google Search Console. Migliora la leggibilità e l'analisi dei dati SEO.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-brands fa-google",
+    seo: true
+  },
+  {
+    name: "Web Developer",
+    url: "https://chromewebstore.google.com/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm",
+    desc: "Toolbar con decine di strumenti per sviluppatori: gestione CSS, HTML, form, cookie e molto altro. Classico irrinunciabile per la SEO tecnica.",
+    cat: "Dev",
+    price: "Gratuito",
+    icon: "fa-solid fa-code",
+    seo: true
+  },
+  {
+    name: "Meta SEO Inspector",
+    url: "https://chromewebstore.google.com/detail/meta-seo-inspector/ibkclpciafdglkjkcibmohobjkcfkaef",
+    desc: "Mostra in modo chiaro tutti i meta tag SEO di qualsiasi pagina: title, description, canonical, OG tags e molto altro.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-tags",
+    seo: true
+  },
+  {
+    name: "Redirect Path",
+    url: "https://chromewebstore.google.com/detail/redirect-path/aomidfkchockcldhbkggjokdkkebmdll",
+    desc: "Traccia la catena completa dei redirect di qualsiasi URL (301, 302, meta refresh, ecc.). Indispensabile per la SEO tecnica e l'audit dei siti.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-arrow-right-arrow-left",
+    seo: true
+  },
+  {
+    name: "Link Grabber",
+    url: "https://chromewebstore.google.com/detail/link-grabber/caodelkhipncidmoebgbbeemedohcdma",
+    desc: "Estrae e lista tutti i link presenti in una pagina web in un solo clic. Utile per analisi dei link interni ed esterni.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-link",
+    seo: true
+  },
+  {
+    name: "Wappalyzer",
+    url: "https://chromewebstore.google.com/detail/wappalyzer-technology-pro/gppongmhjkpfnbhagpmjfkannfbllamg",
+    desc: "Identifica le tecnologie usate da qualsiasi sito web: CMS, analytics, framework, CDN e altro. Ottimo per analisi competitor e audit tecnico.",
+    cat: "Dev",
+    price: "Freemium",
+    icon: "fa-solid fa-magnifying-glass-plus",
+    seo: true
+  },
+  {
+    name: "Mobile Simulator",
+    url: "https://chromewebstore.google.com/detail/mobile-simulator-responsi/ckejmhbmlajgoklhgbapkiccekfoccmk",
+    desc: "Simula la visualizzazione di qualsiasi sito su oltre 50 dispositivi mobile diversi. Perfetto per test di responsività e UX mobile.",
+    cat: "Dev",
+    price: "Gratuito",
+    icon: "fa-solid fa-mobile-screen",
+    seo: true
+  },
+  {
+    name: "Botpresso SEO Extension",
+    url: "https://chromewebstore.google.com/detail/botpresso-seo-extension-a/ghfgcnplehcolnejmpednmiebhjjdige",
+    desc: "Analisi SEO on-page avanzata con audit tecnico direttamente nel browser. Controlla heading, canonical, hreflang e molti altri segnali SEO.",
+    cat: "SEO",
+    price: "Freemium",
+    icon: "fa-solid fa-robot",
+    seo: true
+  },
+  {
+    name: "Glimpse – Google Trends potenziato",
+    url: "https://chromewebstore.google.com/detail/glimpse-google-trends-s/ocmojhiloccgbpjnkeiooioedaklapap",
+    desc: "Aggiunge volumi di ricerca assoluti e dati extra a Google Trends. Trasforma i numeri relativi in dati comparabili e azionabili.",
+    cat: "SEO",
+    price: "Freemium",
+    icon: "fa-solid fa-chart-line",
+    seo: true
+  },
+  {
+    name: "Lighthouse",
+    url: "https://chromewebstore.google.com/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk",
+    desc: "Analizza performance, accessibilità, best practice e SEO tecnica di qualsiasi pagina. Strumento ufficiale Google, gratuito e accuratissimo.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-gauge-high",
+    seo: true
+  },
+  {
+    name: "SERP Snippet Extractor",
+    url: "https://chromewebstore.google.com/detail/serp-snippet-extractor-by/gcigkdheghgmadikicbaahpgklohlikn",
+    desc: "Estrae e visualizza gli snippet SERP da qualsiasi pagina di risultati Google. Utile per analisi competitor e ottimizzazione dei title e description.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-list-ul",
+    seo: true
+  },
+  {
+    name: "Shopify Spy",
+    url: "https://chromewebstore.google.com/detail/shopify-spy-dropshipping/hjbfbllnfhppnhjdhhbmjabikmkfekgf",
+    desc: "Analizza qualsiasi negozio Shopify: prodotti, app installate, tema usato e strategie. Utile per analisi competitor e-commerce.",
+    cat: "Ecommerce",
+    price: "Freemium",
+    icon: "fa-solid fa-user-secret",
+    seo: false
+  },
+  {
+    name: "SEO Render Insight Tool",
+    url: "https://chromewebstore.google.com/detail/seo-render-insight-tool/ignachbibbeengfepmkeogegpfkigljc",
+    desc: "Analizza come Google renderizza il JavaScript di una pagina. Confronta HTML grezzo e DOM renderizzato per individuare problemi SEO.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-eye",
+    seo: true
+  },
+  {
+    name: "I'm a Gentleman",
+    url: "https://chromewebstore.google.com/detail/im-a-gentleman/afjaicccalbbickikgdegaihmajaidpd",
+    desc: "Permette di scaricare immagini da qualsiasi pagina web semplicemente trascinandole. Piccolo ma utilissimo per velocizzare il workflow.",
+    cat: "Produttività",
+    price: "Gratuito",
+    icon: "fa-solid fa-image",
+    seo: false
+  },
+  {
+    name: "Screen Recorder",
+    url: "https://chromewebstore.google.com/detail/screen-recorder/hniebljpgcogalllopnjokppmgbhaden",
+    desc: "Registra lo schermo direttamente dal browser senza software aggiuntivi. Perfetto per tutorial, reportistica e segnalazione bug.",
+    cat: "Produttività",
+    price: "Freemium",
+    icon: "fa-solid fa-record-vinyl",
+    seo: false
+  },
+  {
+    name: "JavaScript Disabler",
+    url: "https://chromewebstore.google.com/detail/javascript-disable-chrome/jbjdopljoflabmgndibnfmnmojbafaog",
+    desc: "Disabilita JavaScript su qualsiasi pagina con un clic. Fondamentale per testare come Google vede una pagina senza rendering JS.",
+    cat: "Dev",
+    price: "Gratuito",
+    icon: "fa-brands fa-js",
+    seo: true
+  },
+  {
+    name: "SEO PAA Extractor",
+    url: "https://chromewebstore.google.com/detail/seo-paaextractor/fkhfcepajpjpmbleeinddakmkidhohdo",
+    desc: "Estrae automaticamente le domande People Also Ask (PAA) dalla SERP di Google. Perfetto per content strategy e keyword research.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-circle-question",
+    seo: true
+  },
+  {
+    name: "Ahrefs SEO Toolbar",
+    url: "https://chromewebstore.google.com/detail/ahrefs-seo-toolbar/hgmoccdbjhknikckedaaebbpdeebhiei",
+    desc: "Overlay SEO su ogni pagina web con dati Ahrefs: Domain Rating, backlink, traffico organico stimato e segnali on-page. Richiede account Ahrefs.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-chart-simple",
+    seo: true
+  },
+  {
+    name: "Remote for Slides",
+    url: "https://chromewebstore.google.com/detail/remote-for-slides/pojijacppbhikhkmegdoechbfiiibppi",
+    desc: "Controlla le presentazioni Google Slides da remoto tramite smartphone. Utilissimo durante meeting, webinar e presentazioni clienti.",
+    cat: "Produttività",
+    price: "Gratuito",
+    icon: "fa-solid fa-display",
+    seo: false
+  }
+];
+
+// ── STATE ───────────────────────────────────────────────────────────────────
+const state = {
+  tools: { cat: 'all', price: null, search: '' },
+  ext:   { cat: 'all', price: null, search: '' }
+};
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+function priceClass(p) {
+  if (p === 'Gratuito') return 'tag-free';
+  if (p === 'Freemium') return 'tag-freemium';
+  return 'tag-paid';
+}
+
+function priceIcon(p) {
+  if (p === 'Gratuito') return 'fa-solid fa-circle-check';
+  if (p === 'Freemium') return 'fa-solid fa-circle-half-stroke';
+  return 'fa-solid fa-credit-card';
+}
+
+function catLabel(c) {
+  const map = {
+    SEO: 'SEO', AI: 'AI', Video: 'Video & audio', Dev: 'Dev & tecnica',
+    Analytics: 'Analytics', Design: 'Design', Ecommerce: 'E-commerce',
+    Social: 'Social & ADV', Email: 'Email marketing', Produttività: 'Produttività'
+  };
+  return map[c] || c;
+}
+
+function buildCard(item, isExt) {
+  const btnClass = isExt ? 'ext' : '';
+  const btnText  = isExt ? 'Installa' : 'Apri tool';
+  const btnIcon  = isExt ? 'fa-solid fa-download' : 'fa-solid fa-arrow-up-right-from-square';
+
+  const domain = (() => { try { return new URL(item.url).hostname.replace('www.',''); } catch { return ''; } })();
+
+  return `
+  <div class="card"
+    data-cat="${item.cat}"
+    data-price="${item.price}"
+    data-search="${item.name.toLowerCase()} ${item.desc.toLowerCase()} ${item.cat.toLowerCase()}">
+    <div class="card-top">
+      <div class="card-icon">
+        <i class="${item.icon}"></i>
+      </div>
+      <div class="card-title-area">
+        <div class="card-name">${item.name}</div>
+        <div class="card-url">${domain}</div>
+      </div>
+    </div>
+    <p class="card-desc">${item.desc}</p>
+    <div class="card-footer">
+      <div class="tags">
+        <span class="tag tag-cat">${catLabel(item.cat)}</span>
+        <span class="tag ${priceClass(item.price)}">
+          <i class="${priceIcon(item.price)}" style="margin-right:4px;font-size:9px"></i>${item.price}
+        </span>
+      </div>
+      <a href="${item.url}" target="_blank" rel="noopener" class="btn-open ${btnClass}">
+        <i class="${btnIcon}"></i>${btnText}
+      </a>
+    </div>
+  </div>`;
+}
+
+function renderAll() {
+  document.getElementById('grid-tools').innerHTML = TOOLS.map(t => buildCard(t, false)).join('');
+  document.getElementById('grid-ext').innerHTML   = EXTENSIONS.map(e => buildCard(e, true)).join('');
+  updateCounts();
+}
+
+// ── FILTER ───────────────────────────────────────────────────────────────────
+function filterCards(tab) {
+  const s   = state[tab];
+  s.search  = document.getElementById('search-' + tab).value.toLowerCase().trim();
+  const grid = document.getElementById('grid-' + tab);
+  const cards = grid.querySelectorAll('.card');
+  let vis = 0;
+
+  cards.forEach(c => {
+    const matchCat    = s.cat === 'all' || c.dataset.cat === s.cat;
+    const matchPrice  = !s.price || c.dataset.price === s.price;
+    const matchSearch = !s.search || c.dataset.search.includes(s.search);
+    const show = matchCat && matchPrice && matchSearch;
+    c.style.display = show ? '' : 'none';
+    if (show) vis++;
+  });
+
+  // empty state
+  let empty = grid.querySelector('.empty-state');
+  if (vis === 0) {
+    if (!empty) {
+      grid.insertAdjacentHTML('beforeend',
+        '<div class="empty-state"><i class="fa-solid fa-circle-xmark"></i>Nessun risultato trovato.<br>Prova a cambiare i filtri.</div>');
+    }
+  } else {
+    if (empty) empty.remove();
+  }
+
+  document.getElementById('visible-count').textContent = vis;
+}
+
+function setCat(el, tab) {
+  state[tab].cat = el.dataset.cat;
+  document.querySelectorAll('#chips-cat-' + tab + ' .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  filterCards(tab);
+}
+
+function setPrice(el, tab) {
+  const same = el.classList.contains('active');
+  document.querySelectorAll('#filters-' + tab + ' .filter-chips:last-child .chip').forEach(c => c.classList.remove('active'));
+  if (!same) {
+    el.classList.add('active');
+    state[tab].price = el.dataset.price;
+  } else {
+    state[tab].price = null;
+  }
+  filterCards(tab);
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+let currentTab = 'tools';
+
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  document.getElementById('filters-tools').style.display = tab === 'tools' ? 'flex' : 'none';
+  document.getElementById('filters-ext').style.display   = tab === 'ext'   ? 'flex' : 'none';
+  updateCounts();
+  filterCards(tab);
+}
+
+function updateCounts() {
+  const visTools = TOOLS.length;
+  const visExt   = EXTENSIONS.length;
+  document.getElementById('tools-count').textContent = visTools;
+  document.getElementById('ext-count').textContent   = visExt;
+  document.getElementById('visible-count').textContent =
+    currentTab === 'tools' ? visTools : visExt;
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+renderAll();
+</script>
+</body>
+</html>
