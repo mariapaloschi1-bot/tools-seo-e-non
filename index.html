@@ -569,12 +569,12 @@
     <button class="tab-btn active" onclick="switchTab('tools', this)">
       <i class="fa-solid fa-wrench"></i>
       Tool web
-      <span class="tab-count" id="tools-count">61</span>
+      <span class="tab-count" id="tools-count">69</span>
     </button>
     <button class="tab-btn" onclick="switchTab('ext', this)">
       <i class="fa-brands fa-chrome"></i>
       Estensioni Chrome
-      <span class="tab-count" id="ext-count">19</span>
+      <span class="tab-count" id="ext-count">24</span>
     </button>
   </div>
 </div>
@@ -647,7 +647,7 @@
 
 <!-- STATS -->
 <div class="stats-bar" id="stats-bar">
-  Mostrati <span id="visible-count">61</span> risultati
+  Mostrati <span id="visible-count">69</span> risultati
 </div>
 
 <!-- GRIDS -->
@@ -1229,7 +1229,79 @@ const TOOLS = [
     price: "Gratuito",
     icon: "fa-solid fa-arrow-up-right-dots",
     seo: true
-  }
+  },
+  {
+  name: "Meta Ad Library",
+  url: "https://www.facebook.com/ads/library",
+  desc: "Libreria pubblica per cercare gli annunci attivi su Facebook, Instagram e Messenger. Utile per analizzare creatività, copy e competitor.",
+  cat: "Social",
+  price: "Gratuito",
+  icon: "fa-solid fa-rectangle-ad",
+  seo: false
+},
+{
+  name: "Google Ads Transparency Center",
+  url: "https://adstransparency.google.com/",
+  desc: "Permette di consultare gli annunci attivi nell’ecosistema Google, utile per studiare messaggi e presenza adv dei competitor.",
+  cat: "Analytics",
+  price: "Gratuito",
+  icon: "fa-solid fa-magnifying-glass-chart",
+  seo: false
+},
+{
+  name: "Foreplay",
+  url: "https://www.foreplay.co/",
+  desc: "Piattaforma ad-spy e swipe file per salvare, organizzare e studiare creatività pubblicitarie e ads dei competitor.",
+  cat: "Social",
+  price: "Freemium",
+  icon: "fa-solid fa-folder-open",
+  seo: false
+},
+{
+  name: "Adbeat",
+  url: "https://www.adbeat.com/tour",
+  desc: "Tool di competitive intelligence per display advertising, utile per analizzare placement, network e strategia media dei competitor.",
+  cat: "Analytics",
+  price: "A pagamento",
+  icon: "fa-solid fa-chart-line",
+  seo: false
+},
+{
+  name: "BigSpy",
+  url: "https://bigspy.com/en",
+  desc: "Ad-spy tool con ampio database di creatività social per ricerca competitor, hook creativi e formati pubblicitari.",
+  cat: "Social",
+  price: "Freemium",
+  icon: "fa-solid fa-eye",
+  seo: false
+},
+{
+  name: "Semrush",
+  url: "https://www.semrush.com/",
+  desc: "Suite all-in-one per SEO, content marketing, advertising, competitor analysis e monitoraggio della visibilità online.",
+  cat: "SEO",
+  price: "A pagamento",
+  icon: "fa-solid fa-chart-line",
+  seo: true
+},
+{
+  name: "SEOZoom",
+  url: "https://www.seozoom.it/",
+  desc: "Piattaforma italiana all-in-one per SEO e content strategy, utile per analisi keyword, competitor, contenuti e monitoraggio della visibilità organica.",
+  cat: "SEO",
+  price: "A pagamento",
+  icon: "fa-solid fa-magnifying-glass-chart",
+  seo: true
+},
+{
+  name: "sim.ai",
+  url: "https://www.sim.ai/",
+  desc: "Piattaforma per creare agenti AI e workflow automatizzati collegando modelli, dati e integrazioni in un unico workspace.",
+  cat: "AI",
+  price: "Freemium",
+  icon: "fa-solid fa-diagram-project",
+  seo: false
+}
 ];
 
 
@@ -1405,7 +1477,52 @@ const EXTENSIONS = [
     price: "Gratuito",
     icon: "fa-solid fa-display",
     seo: false
-  }
+  },
+  {
+  name: "Meta Pixel Helper",
+  url: "https://developers.facebook.com/docs/meta-pixel/support/pixel-helper/",
+  desc: "Estensione per verificare e diagnosticare il corretto funzionamento del Meta Pixel sulle pagine e landing di campagna.",
+  cat: "Analytics",
+  price: "Gratuita",
+  icon: "fa-solid fa-bug",
+  seo: false
+},
+{
+  name: "TikTok Pixel Helper",
+  url: "https://chromewebstore.google.com/detail/tiktok-pixel-helper/aelgobmabdmlfmiblddjfnjodalhidnn",
+  desc: "Controlla e valida l’installazione del TikTok Pixel per il tracciamento delle conversioni.",
+  cat: "Analytics",
+  price: "Gratuita",
+  icon: "fa-solid fa-chart-simple",
+  seo: false
+},
+{
+  name: "Tag Assistant",
+  url: "https://chromewebstore.google.com/detail/tag-assistant/kejbdjndbnbjgmefkgdddjlbokphdefk?hl=en",
+  desc: "Estensione Google per fare troubleshooting dei tag di Analytics, Google Ads e Tag Manager.",
+  cat: "Analytics",
+  price: "Gratuita",
+  icon: "fa-solid fa-tags",
+  seo: false
+},
+{
+  name: "Dataslayer",
+  url: "https://chromewebstore.google.com/detail/dataslayer/ikbablmmjldhamhcldjjigniffkkjgpo",
+  desc: "Estensione utile per leggere data layer ed eventi, molto comoda per tracking QA e reporting PPC.",
+  cat: "Analytics",
+  price: "Freemium",
+  icon: "fa-solid fa-layer-group",
+  seo: false
+},
+{
+  name: "SimilarWeb Website Traffic & SEO",
+  url: "https://chromewebstore.google.com/detail/similarweb-website-traffi/hoklmmgfnpapgjgcpechhaamimifchmp",
+  desc: "Mostra rapidamente stime di traffico, insight SEO e segnali competitor direttamente dal browser.",
+  cat: "Analytics",
+  price: "Freemium",
+  icon: "fa-solid fa-globe",
+  seo: false
+}
 ];
 
 // ── STATE ───────────────────────────────────────────────────────────────────
