@@ -563,7 +563,7 @@
     <button class="tab-btn active" onclick="switchTab('tools', this)">
       <i class="fa-solid fa-wrench"></i>
       Tool web
-      <span class="tab-count" id="tools-count">54</span>
+      <span class="tab-count" id="tools-count">61</span>
     </button>
     <button class="tab-btn" onclick="switchTab('ext', this)">
       <i class="fa-brands fa-chrome"></i>
@@ -641,7 +641,7 @@
 
 <!-- STATS -->
 <div class="stats-bar" id="stats-bar">
-  Mostrati <span id="visible-count">53</span> risultati
+  Mostrati <span id="visible-count">61</span> risultati
 </div>
 
 <!-- GRIDS -->
@@ -1150,7 +1150,7 @@ const TOOLS = [
     icon: "fa-solid fa-scale-balanced",
     seo: false
   },
-  {
+    {
     name: "Wayback URL Extractor",
     url: "https://seogreetings.com/pages/wayback-machine-extractor",
     desc: "Estrae in bulk gli URL storici di un dominio dalla Wayback Machine con status code e date. Perfetto per audit SEO, redirect mapping e migrazioni.",
@@ -1158,8 +1158,72 @@ const TOOLS = [
     price: "Gratuito",
     icon: "fa-solid fa-clock-rotate-left",
     seo: true
+  },
+  {
+    name: "Google Stitch",
+    url: "https://stitch.withgoogle.com/",
+    desc: "Tool Google per generare interfacce UI di app web e mobile con AI. Perfetto per ideazione rapida, prototipi e design exploration.",
+    cat: "Design",
+    price: "Gratuito",
+    icon: "fa-solid fa-pen-ruler",
+    seo: false
+  },
+  {
+    name: "WordStream – free keyword tool",
+    url: "https://www.wordstream.com/keywords?cid=Web_Any_WordstreamGraders_FreeGraders_KWT",
+    desc: "Tool gratuito per trovare keyword correlate con search volume, CPC e competition su Google e Bing. Utile per SEO e PPC.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-key",
+    seo: true
+  },
+  {
+    name: "Dead Link Checker",
+    url: "https://www.deadlinkchecker.com/website-dead-link-checker.asp",
+    desc: "Crawla il sito e individua link rotti e URL non funzionanti. Utile per audit tecnici SEO e manutenzione del sito.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-link-slash",
+    seo: true
+  },
+  {
+    name: "Cohesive Colors",
+    url: "https://javier.xyz/cohesive-colors",
+    desc: "Tool per creare palette colori più coerenti e armoniose partendo da colori iniziali. Molto utile per branding e UI design.",
+    cat: "Design",
+    price: "Gratuito",
+    icon: "fa-solid fa-droplet",
+    seo: false
+  },
+  {
+    name: "Muzli Colors",
+    url: "https://colors.muz.li/",
+    desc: "Generatore di palette colori per creare, esplorare e testare combinazioni cromatiche pronte all’uso per progetti digitali.",
+    cat: "Design",
+    price: "Gratuito",
+    icon: "fa-solid fa-palette",
+    seo: false
+  },
+  {
+    name: "Redirect Tracker – Website Planet",
+    url: "https://www.websiteplanet.com/it/webtools/redirected/?device=desktop&geo=ww",
+    desc: "Controlla la catena dei redirect e mostra dove porta davvero un URL corto, affiliato o reindirizzato. Utile per SEO e verifica link.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-route",
+    seo: true
+  },
+  {
+    name: "Ahrefs – backlink checker gratuito",
+    url: "https://ahrefs.com/it/backlink-checker",
+    desc: "Analizza i backlink di qualsiasi sito e mostra link, domini referenti e dati utili per la link analysis. Versione gratuita di Ahrefs.",
+    cat: "SEO",
+    price: "Gratuito",
+    icon: "fa-solid fa-arrow-up-right-dots",
+    seo: true
   }
 ];
+
 
 
 const EXTENSIONS = [
